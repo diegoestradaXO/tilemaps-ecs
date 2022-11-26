@@ -1,0 +1,9 @@
+/Users/diegoestrada/Documents/universidad/last-semester/game-engines/tilemaps/build/CMakeFiles/NewProject.dir
+/Users/diegoestrada/Documents/universidad/last-semester/game-engines/tilemaps/build/CMakeFiles/edit_cache.dir
+/Users/diegoestrada/Documents/universidad/last-semester/game-engines/tilemaps/build/CMakeFiles/rebuild_cache.dir
+/Users/diegoestrada/Documents/universidad/last-semester/game-engines/tilemaps/build/src/Game/CMakeFiles/Game.dir
+/Users/diegoestrada/Documents/universidad/last-semester/game-engines/tilemaps/build/src/Game/CMakeFiles/edit_cache.dir
+/Users/diegoestrada/Documents/universidad/last-semester/game-engines/tilemaps/build/src/Game/CMakeFiles/rebuild_cache.dir
+/Users/diegoestrada/Documents/universidad/last-semester/game-engines/tilemaps/build/src/Scene/CMakeFiles/Scene.dir
+/Users/diegoestrada/Documents/universidad/last-semester/game-engines/tilemaps/build/src/Scene/CMakeFiles/edit_cache.dir
+/Users/diegoestrada/Documents/universidad/last-semester/game-engines/tilemaps/build/src/Scene/CMakeFiles/rebuild_cache.dir
