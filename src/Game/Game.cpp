@@ -58,9 +58,13 @@ void Game::setup()
 
   Entity player = scene->createEntity();
   player.addComponent<MovementComponent>(MovementComponent{50, 50});
-  player.addComponent<ColliderComponent>(ColliderComponent{50, 50});
+  
 
-  scene->addSetupSystem(new HelloSystem());
+  // scene->addSetupSystem(new HelloSystem());
+  // scene->addSetupSystem(new CharacterSetupSystem(renderer));
+  // scene->addInputSystem(new PlayerInputSystem());
+
+  // scene->addUpdateSystem(new MovementUpdateSystem());
   TilemapSystem* tilesetSystem = new TilemapSystem(renderer);
   scene->addSetupSystem(tilesetSystem);
   scene->addRenderSystem(tilesetSystem);

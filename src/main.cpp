@@ -12,7 +12,7 @@ int main(int argc, char* args[] )
 {
   game = new Game();
 
-  game->init("Brand new game", SCREEN_WIDTH, SCREEN_HEIGHT);
+  game->init("Ramburger", SCREEN_WIDTH, SCREEN_HEIGHT);
   game->setup();
 
   while (true && game->running())

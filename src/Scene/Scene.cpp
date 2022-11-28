@@ -73,6 +73,14 @@ void Scene::update(double dT)
   }
 }
 
+void Scene::input(SDL_Event event)
+{  
+  for (InputSystem* sys: inputSystems)
+  {
+    sys->run(event);
+  }
+}
+
 void Scene::render(SDL_Renderer* renderer)
 {
   std::cout << "Scene Render" << std::endl;
@@ -82,3 +90,4 @@ void Scene::render(SDL_Renderer* renderer)
     sys->run(renderer);
   }
 }
+

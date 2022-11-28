@@ -37,6 +37,7 @@ class Scene {
 
     void setup();
     void update(double dT);
+    void input(SDL_Event event);
     void render(SDL_Renderer* renderer);
 };
 

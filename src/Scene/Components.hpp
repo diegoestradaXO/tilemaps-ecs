@@ -29,4 +29,11 @@ struct ColliderComponent {
   // glm::vec2 size;
 };
 
+struct SpriteComponent {
+  int x = 0;
+  int y = 0;
+  int size = 24;
+  SDL_Texture* texture;
+};
+
 #endif
