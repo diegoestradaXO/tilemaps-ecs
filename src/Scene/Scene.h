@@ -24,7 +24,7 @@ class Scene {
     ~Scene();
 
     entt::registry r;
-
+    Entity* player;
     Entity createEntity(
       const std::string& name = "NO NAME",
       int x = 0,

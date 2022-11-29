@@ -15,6 +15,13 @@ class Entity
       scene = s;
     }
 
+    Entity(const Entity& copy) {
+      std::cout << "Entity Copied" << std::endl;
+
+      handle = copy.handle;
+      scene = copy.scene;
+    }
+
     ~Entity() {
       std::cout << "Entity Destroyed" << std::endl;
     }
@@ -29,8 +36,14 @@ class Entity
       scene->r.remove<T>(handle);
     }
 
-  private:
+    template<typename T>
+    T& getComponent() {
+      return scene->r.get<T>(handle);
+    }
+
     entt::entity handle;
+
+  private:
     Scene* scene;
 };
 

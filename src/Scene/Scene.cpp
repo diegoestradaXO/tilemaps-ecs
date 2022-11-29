@@ -24,7 +24,7 @@ Entity Scene::createEntity(const std::string& name, int x, int y)
 {
   Entity entity = { r.create(), this };
   entity.addComponent<TagComponent>(name);
-  entity.addComponent<TransformComponent>(x, y,1, 1,0.0);
+  entity.addComponent<TransformComponent>(x, y);
 
   return entity;
 }

@@ -56,10 +56,10 @@ void Game::setup()
 {
   scene = new Scene("Level1");
 
-  Entity player = scene->createEntity();
-  player.addComponent<MovementComponent>(MovementComponent{50, 50});
+  scene->addSetupSystem(new CharacterSetupSystem(renderer));
+  scene->addInputSystem(new PlayerInputSystem());
+  scene->addUpdateSystem(new MovementUpdateSystem()); 
   
-
   // scene->addSetupSystem(new HelloSystem());
   // scene->addSetupSystem(new CharacterSetupSystem(renderer));
   // scene->addInputSystem(new PlayerInputSystem());
@@ -68,7 +68,7 @@ void Game::setup()
   TilemapSystem* tilesetSystem = new TilemapSystem(renderer);
   scene->addSetupSystem(tilesetSystem);
   scene->addRenderSystem(tilesetSystem);
-
+  scene->addRenderSystem(new SpriteRenderSystem());
   scene->setup();
 }
 

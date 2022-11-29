@@ -10,11 +10,8 @@ struct TagComponent {
 struct TransformComponent {
   int posX;
   int posY;
-  int scaleX;
-  int scaleY;
   // glm::vec2 position;
   // glm::vec2 scale;
-  double rotation;
 };
 
 struct MovementComponent {
@@ -23,16 +20,11 @@ struct MovementComponent {
   // glm::vec2 velocity;
 };
 
-struct ColliderComponent {
-    int w;
-    int h;
-  // glm::vec2 size;
-};
 
 struct SpriteComponent {
   int x = 0;
   int y = 0;
-  int size = 24;
+  int size = 32;
   SDL_Texture* texture;
 };
 

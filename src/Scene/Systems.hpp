@@ -6,69 +6,91 @@
 #include "./System.h"
 #include "./Components.hpp"
 
+class MovementUpdateSystem : public UpdateSystem {
+    public:
+        void run(double dT) override {
+          const auto view = scene->r.view<TransformComponent, MovementComponent>();
+          for (const entt::entity e : view) {
+            auto& pos = view.get<TransformComponent>(e);
+            const auto vel = view.get<MovementComponent>(e);
 
-class MovementSystem : public UpdateSystem {
-  private:
-    int counter = 0;
+            pos.posX += vel.velX * dT;
+            pos.posY += vel.velY * dT;
+          }
+        }
+};
 
+class PlayerInputSystem : public InputSystem {
   public:
-    MovementSystem(int c) : counter(c) {}
+    void run(SDL_Event event) override {
+      auto& playerMovement = scene->player->getComponent<MovementComponent>();
 
-    void run(double dT) override {
-      const auto view = scene->r.view<TransformComponent, MovementComponent>();
-      for (const entt::entity e : view) {
-        TransformComponent& t = view.get<TransformComponent>(e);
-        MovementComponent& m = view.get<MovementComponent>(e);
+      int speed = 100;
 
-        if (t.posX <= 0)
-        {
-          m.velX *= -1;
+      if (event.type == SDL_KEYDOWN)
+      {
+        switch (event.key.keysym.sym) {
+          case SDLK_LEFT:
+            playerMovement.velX = -speed;
+            break;
+          case SDLK_RIGHT:
+            playerMovement.velX = speed;
+            break;
+          case SDLK_UP:
+            playerMovement.velY = -speed;
+            break;
+          case SDLK_DOWN:
+            playerMovement.velY = speed;
+            break;
         }
-
-        if (t.posX >= 640)
-        {
-          m.velX *= -1;
+      }  
+      if (event.type == SDL_KEYUP)
+      {
+        switch (event.key.keysym.sym) {
+          case SDLK_LEFT:
+            playerMovement.velX = 0;
+            break;
+          case SDLK_RIGHT:
+            playerMovement.velX =  0;
+            break;
+          case SDLK_UP:
+            playerMovement.velY = 0;
+            break;
+          case SDLK_DOWN:
+            playerMovement.velY = 0;
+            break;
         }
-
-        if (t.posY <= 0)
-        {
-          m.velY *= -1;
-        }
-
-        if (t.posY >= 480)
-        {
-          m.velY *= -1;
-        }
-
-        t.posX += m.velX * dT;
-        t.posY += m.velY * dT;
-
-        std::cout << "x: " << t.posX << std::endl;
-        std::cout << "y: " << t.posY << std::endl;
-        std::cout << "c: " << counter++ << std::endl;
       }
     }
 };
 
-class CubeSystem : public RenderSystem {
-  public:
-    void run(SDL_Renderer* renderer) override {
-      SDL_SetRenderDrawColor(renderer, 255, 100, 100, 1);
+class CharacterSetupSystem : public SetupSystem {
+    private:
+        const std::string spritefile = "./assets/characters/main/front/rambi.png";        
+        SDL_Renderer* renderer;
 
-      const auto view = scene->r.view<TransformComponent, ColliderComponent>();
-      for (const entt::entity e : view) {
-        const TransformComponent& t = view.get<TransformComponent>(e);
-        const ColliderComponent& c = view.get<ColliderComponent>(e);
-        const int x = t.posX;
-        const int y = t.posY;
-        const int w = c.w;
-        const int h = c.h;
+    public:
+        CharacterSetupSystem(SDL_Renderer* r) : renderer(r) {}
 
-        SDL_Rect rect = { x, y, w, h };    
-        SDL_RenderFillRect(renderer, &rect);
-      }
-    }
+        ~CharacterSetupSystem() {}
+
+        void run() override {
+
+
+          SDL_Surface* surface = IMG_Load(spritefile.c_str());
+          SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+          SDL_FreeSurface(surface);
+
+          Entity player = scene->createEntity(
+            "PLAYER",
+            100, 100
+          );
+          player.addComponent<MovementComponent>(100, 100);
+          player.addComponent<SpriteComponent>(0, 0, 32, texture);
+          scene->player = new Entity(player);
+        }
 };
+
 
 class HelloSystem : public SetupSystem {
   public:
@@ -192,3 +214,32 @@ class TilemapSystem : public SetupSystem, public RenderSystem {
     }
 };
 
+class SpriteRenderSystem : public RenderSystem {
+    public:
+        SpriteRenderSystem() {}
+
+        ~SpriteRenderSystem() {}
+
+        void run(SDL_Renderer* renderer) override {
+          auto cameraTransform = scene->player->getComponent<TransformComponent>();
+          // auto cameraZoom = scene->mainCamera->getComponent<CameraComponent>().zoom;
+          const int cx = cameraTransform.posX;
+          const int cy = cameraTransform.posY;
+
+          const auto view = scene->r.view<TransformComponent, SpriteComponent>();
+          for (const entt::entity e : view) {
+            const auto pos = view.get<TransformComponent>(e);
+            const auto sprite = view.get<SpriteComponent>(e);
+            const int dstTileSize = sprite.size;
+
+            SDL_Rect src = { sprite.x, sprite.y, sprite.size, sprite.size };
+            SDL_Rect dst = { pos.posX - cx, pos.posY - cy, dstTileSize, dstTileSize };
+
+
+            SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+
+            // SDL_RenderFillRect(renderer, &dst);
+            SDL_RenderCopy(renderer, sprite.texture, &src, &dst);                        
+          }
+        }
+};
